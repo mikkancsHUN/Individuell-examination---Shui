@@ -2,7 +2,7 @@
 
 
 body {
-  background: rgb(19, 46, 66);
+  background: rgb(12, 12, 85);
   font-family: "Roboto", sans-serif;
   width: 100vw;
 }
@@ -10,11 +10,17 @@ body {
 h1 {
   color: white;
   font-size: 3rem;
-  background-color: red;
+  background-color: rgb(62, 25, 100);
   font-style: italic;
 }
 
 h2 {
+  color: rgba(255, 255, 255, 0.75);
+  font-weight: 100;
+  font-size: 1.2rem;
+}
+
+h3 {
   color: white;
   text-align: start;
 }
@@ -37,7 +43,7 @@ section {
 .message-bubble {
   border-radius: 10px;
   color: rgb(0, 0, 0);
-  background: rgb(255, 255, 255);
+  background: rgba(255, 255, 255, 0.95);
   text-align: start;
   width: 50%;
   padding: 0rem 1rem;
@@ -74,13 +80,13 @@ label {
 }
 
 .edit-btn {
-  background: rgb(25, 67, 85);
+  background: rgb(44, 25, 85);
   color: white;
   border: none;
   width: 100px;
 }
 
-.red:active, .green:active {
+.delete-btn:active, .edit-btn:active {
   transform: scale(0.9);
   background: rgba(0, 0, 0, 0.435);
 }

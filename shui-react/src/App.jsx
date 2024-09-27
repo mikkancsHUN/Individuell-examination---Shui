@@ -17,6 +17,7 @@ function App() {
     getMessages(setMessages);
   }, []);
 
+  // POST Message
   const postMessage = (e) => {
     e.preventDefault();
     axios.post(`https://revwbyhs8c.execute-api.eu-north-1.amazonaws.com/api/messages`, {
@@ -24,15 +25,17 @@ function App() {
       message: newMessage
     })
       .then(response => {
-        if (response.data.data.success) {
+        console.log('POST API response:', response);
+        if (response.status >= 200 && response.status < 300) {
           getMessages(setMessages);
-          setNewMessage('');
-          setUsername('');
+          setNewMessage(''); // Törölje az input mezőt
+          setUsername('');   // Törölje az input mezőt
         }
       })
       .catch(error => console.error('Error posting message:', error));
   }
-
+  
+  // PUT Message
   const updateMessage = (id) => {
     const updatedMessage = {
       username: username,
@@ -41,11 +44,11 @@ function App() {
 
     axios.put(`https://revwbyhs8c.execute-api.eu-north-1.amazonaws.com/api/messages/${id}`, updatedMessage)
       .then(response => {
-        if (response.data.data.success) {
+        if (response.status >= 200 && response.status < 300) {
           getMessages(setMessages);
           setEditingMessageId(null);
-          setNewMessage('');
-          setUsername('');
+          setNewMessage(''); // Törölje az input mezőt
+          setUsername('');   // Törölje az input mezőt
         }
       })
       .catch(error => console.error('Error updating message:', error));
@@ -57,10 +60,11 @@ function App() {
     setEditingMessageId(message.id);
   }
 
+  // DELETE Message
   const deleteMessage = (id) => {
     axios.delete(`https://revwbyhs8c.execute-api.eu-north-1.amazonaws.com/api/messages/${id}`)
       .then(response => {
-        if (response.data.data.success) {
+        if (response.status >= 200 && response.status < 300) {
           getMessages(setMessages);
         }
       })
@@ -70,6 +74,7 @@ function App() {
   return (
     <div className="app">
       <h1>Shui App</h1>
+      <h2>Send or Edit message here:</h2>
       <form onSubmit={e => {
         e.preventDefault();
         if (editingMessageId) {
@@ -92,7 +97,7 @@ function App() {
         />
         <button type="submit">{editingMessageId ? 'Update Message' : 'Send Message'}</button>
       </form>
-      <h2>Messages:</h2>
+      <h3>Messages:</h3>
       <section>
         {
         messages.length > 0 ? (
