@@ -11,7 +11,10 @@ function App() {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [username, setUsername] = useState('');
+  const [filterUsername, setFilterUsername] = useState('');
   const [editingMessageId, setEditingMessageId] = useState(null);
+  const [sortBy, setSortBy] = useState(null);
+  const [sortDirection, setSortDirection] = useState('asc');
 
   useEffect(() => {
     getMessages(setMessages);
@@ -28,8 +31,8 @@ function App() {
         console.log('POST API response:', response);
         if (response.status >= 200 && response.status < 300) {
           getMessages(setMessages);
-          setNewMessage(''); // Törölje az input mezőt
-          setUsername('');   // Törölje az input mezőt
+          setNewMessage('');
+          setUsername('');
         }
       })
       .catch(error => console.error('Error posting message:', error));
@@ -47,8 +50,8 @@ function App() {
         if (response.status >= 200 && response.status < 300) {
           getMessages(setMessages);
           setEditingMessageId(null);
-          setNewMessage(''); // Törölje az input mezőt
-          setUsername('');   // Törölje az input mezőt
+          setNewMessage('');
+          setUsername('');
         }
       })
       .catch(error => console.error('Error updating message:', error));
@@ -71,10 +74,43 @@ function App() {
       .catch(error => console.error('Error deleting message:', error));
   }
 
+  // Szortírozás dátum szerint
+  const sortMessages = (messages) => {
+    let sortedMessages = [...messages];
+    
+    if (sortBy === 'date') {
+      sortedMessages.sort((a, b) => {
+        if (sortDirection === 'asc') {
+          return new Date(a.createdAt) - new Date(b.createdAt);
+        } else {
+          return new Date(b.createdAt) - new Date(a.createdAt);
+        }
+      });
+    }
+    
+    return sortedMessages;
+  }
+
+  const filteredMessages = () => {
+    let filtered = sortMessages(messages);
+    if (filterUsername) {
+      filtered = filtered.filter(message => message.username.toLowerCase().includes(filterUsername.toLowerCase()));
+    }
+    return filtered;
+  }
+
+  const handleSort = (type) => {
+    if (sortBy === type) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortBy(type);
+      setSortDirection('asc');
+    }
+  }
+
   return (
     <div className="app">
       <h1>Shui App</h1>
-      <h2>Send or Edit message here:</h2>
       <form onSubmit={e => {
         e.preventDefault();
         if (editingMessageId) {
@@ -97,11 +133,24 @@ function App() {
         />
         <button type="submit">{editingMessageId ? 'Update Message' : 'Send Message'}</button>
       </form>
-      <h3>Messages:</h3>
+
+      <h2>Messages:</h2>
+
+      <input 
+        onChange={(e) => setFilterUsername(e.target.value)}
+        placeholder='Filter by username'
+        type="text"
+        value={filterUsername}
+      />
+
+      <div className="sort-buttons">
+        <button onClick={() => handleSort('date')}>Sort by Date ({sortDirection === 'asc' ? 'Asc' : 'Desc'})</button>
+      </div>
+
       <section>
         {
-        messages.length > 0 ? (
-          messages.map((message) => (
+        filteredMessages().length > 0 ? (
+          filteredMessages().map((message) => (
             <div className='message-bubble' key={message.id}>
               <p className='date'>Sent: {new Date(message.createdAt).toLocaleString()}</p>
               <p className='message'>{message.text}</p>
@@ -111,7 +160,7 @@ function App() {
             </div>
           ))
         ) : (
-          <p className='warning'>No message has been sent yet</p>
+          <p className='warning'>No messages found</p>
         )
         }
       </section>
