@@ -1,10 +1,56 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap');
 
+
+:root {
+  --clr-blue: #19274A;
+  --clr-light-blue: #00B2FFCC;
+  --clr-red: #EF4343;
+  --clr-gray: rgba(255, 255, 255, 0.4);
+}
+
+.d-none {
+  display: none;
+}
+
+.app {
+  padding: 2rem;
+}
+
+.shui-logo {
+  background: #EF4343;
+  width: 60px;
+  height: 42px;
+  left: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 10px;
+  border-radius: 0px 0px 2px 2px;
+  font-size: 40px;
+  font-weight: 700;
+  position: fixed;
+  z-index: 99;
+  top: 0;
+  transform: rotate(90deg);
+  text-decoration: none;
+  color: black;
+  transition: 0.2s;
+}
+
+.shui-logo:hover {
+  transform: scale(1.1);
+}
+
+.shui-logo:active {
+  transform: scale(0.9);
+}
 
 body {
-  background: rgb(12, 12, 85);
-  font-family: "Roboto", sans-serif;
-  width: 100vw;
+  background: var(--clr-blue);
+  font-family: "Open Sans", sans-serif;
+  max-width: 100vw;
+  max-height: 100vh;
 }
 
 h1 {
@@ -25,8 +71,108 @@ h3 {
   text-align: start;
 }
 
+.new-message-btn {
+  width: 50px;
+  height: 50px;
+  position: fixed;
+  bottom: 4%;
+  right: 2%;
+  background: var(--clr-red);
+  border: none;
+  transition: 0.1s;
+}
+.new-message-btn svg {
+  transform: translate(-10px, -2.5px);
+}
+.new-message-btn:hover {
+  transform: scale(1.15);
+}
+.new-message-btn:active {
+  transform: scale(0.85);
+}
+
+form {
+  display: none;
+}
+
+.active {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  justify-content: space-around;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--clr-blue);
+  z-index: 98;
+}
+
+textarea {
+  background: white;
+  color: rgb(0, 0, 0);
+  padding: 1rem;
+  font-family: "Open Sans", sans-serif;
+  font-size: 1.2rem;
+  max-width: 75vw;
+  max-height: 50vh;
+}
+
+.filter-form {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  margin-bottom: 2rem;
+}
+
+.filter-form button {
+  padding: 1rem 2rem;
+  font-size: 1rem;
+}
+
+.username-input {
+  background: none;
+  border: 2px solid var(--clr-gray);
+  font-size: 1.2rem;
+  color: white;
+  border-radius: 4px;
+}
+
+.send-btn {
+  background: var(--clr-red);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  transition: all 0.1s;
+}
+
+.send-btn:hover {
+  transform: scale(1.15);
+}
+.send-btn:active {
+  transform: scale(0.85);
+}
+
 input {
-  padding: 0.5rem 1rem;
+  padding: 1rem 2rem;
+  font-size: 1rem;
+}
+
+.message-input {
+  width: 100%;
+  height: 100%;
+}
+
+.input-btn {
+  padding: 1rem 2rem;
+  font-size: 1rem;
+}
+
+form button {
+  padding: 1rem 2rem;
+  font-size: 1rem;
+  cursor: pointer;
 }
 
 button {
@@ -37,17 +183,39 @@ button {
 section {
   display: flex;
   flex-direction: column;
-  gap: 2rem;
+  gap: 3.5rem;
 }
 
 .message-bubble {
-  border-radius: 10px;
   color: rgb(0, 0, 0);
   background: rgba(255, 255, 255, 0.95);
   text-align: start;
-  width: 50%;
   padding: 0rem 1rem;
+  position: relative;
 }
+.message-bubble::before {
+  content: '';
+  position: absolute;
+  width: 0px;
+  height: 0px;
+  border-style: solid;
+  border-width: 0 25px 25px 25px;
+  border-color: transparent transparent #ffffff transparent;
+  transform: rotate(315deg);
+  right: 2px;
+  bottom: -22px;
+}
+.message-bubble::after {
+  content: '';
+  position: absolute;
+  width: 36px;
+  height: 1px;
+  background: rgb(70 70 70);
+  right: 0px;
+  bottom: -1px;
+  box-shadow: 0px 2px 2px 1px rgb(34, 34, 34);
+}
+
 .message {
   font-size: 1.2rem;
   margin-top: 1.5rem;
@@ -58,10 +226,11 @@ section {
   font-size: 1.2rem;
   font-weight: bold;
   font-style: italic;
+  margin-bottom: 2.4rem;
 }
 
 .date {
-  color: rgba(0, 0, 0, 0.75);
+  color: rgba(0, 0, 0, 0.5);
 }
 
 form {
@@ -72,18 +241,25 @@ label {
   color: rgba(255, 255, 255, 0.9);
 }
 
-.delete-btn {
-  background: red;
+.btns {
+  position: absolute;
+  bottom: -1rem;
+}
+
+.btn {
   color: white;
   border: none;
   width: 100px;
+  border: 1px solid var(--clr-gray);
+  transition: 0.1s;
+}
+
+.delete-btn {
+  background: var(--clr-red);
 }
 
 .edit-btn {
-  background: rgb(44, 25, 85);
-  color: white;
-  border: none;
-  width: 100px;
+  background: var(--clr-blue);
 }
 
 .delete-btn:active, .edit-btn:active {
@@ -94,4 +270,12 @@ label {
 .warning {
   color: rgb(255, 255, 255, 0.9);
   font-size: 2rem;
+  font-weight: 700;
+}
+
+
+@media screen and (max-width: 513px) {
+  .app {
+    padding: 2rem 1rem;
+  }
 }
